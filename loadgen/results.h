@@ -120,7 +120,7 @@ struct PerformanceSummary {
 #endif
   void ProcessLatencies();
   void ProcessTokenLatencies();
-  void ProcessGroupLatencies();
+  std::vector<QuerySampleLatency> ProcessGroupLatencies();
 
   bool MinDurationMet(std::string* recommendation);
   bool EarlyStopping(std::string* recommendation, int64_t queries_issued,

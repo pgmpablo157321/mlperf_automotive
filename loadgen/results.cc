@@ -146,10 +146,10 @@ void PerformanceSummary::ProcessTokenLatencies() {
   }
 }
 
-void PerformanceSummary::ProcessGroupLatencies() {
+std::vector<QuerySampleLatency> PerformanceSummary::ProcessGroupLatencies() {
   if (pr.sample_latencies.empty() || pr.group_sizes.empty() ||
       (!settings.use_grouped_qsl) || (group_latencies_processed)) {
-    return;
+    return std::vector<QuerySampleLatency>();
   }
   sample_count = pr.sample_latencies.size();
   std::vector<size_t> group_initial_idx;
@@ -190,6 +190,7 @@ void PerformanceSummary::ProcessGroupLatencies() {
     lp.query_latency = group_latencies[group_count * lp.percentile];
   }
   group_latencies_processed = true;
+  return group_latencies;
 };
 
 bool PerformanceSummary::EarlyStopping(
@@ -712,9 +713,16 @@ void PerformanceSummary::LogSummary(AsyncSummary& summary) {
 void PerformanceSummary::LogDetail(AsyncDetail& detail) {
 #if USE_NEW_LOGGING_FORMAT
   if (settings.use_grouped_qsl) {
-    ProcessGroupLatencies();
+    std::vector<QuerySampleLatency> group_latencies = ProcessGroupLatencies();
+    for (size_t i = 0; i < group_latencies.size(); i++){
+      MLPERF_LOG(detail, "group_latency", group_latencies[i]);
+    }
   }
   ProcessLatencies();
+  
+  for (size_t i = 0; i < pr.sample_latencies.size(); i++){
+    MLPERF_LOG(detail, "sample_latency", pr.sample_latencies[i]);
+  }
 
   // General validity checking
   std::string min_duration_recommendation;
