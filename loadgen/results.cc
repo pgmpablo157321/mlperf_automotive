@@ -534,11 +534,9 @@ void PerformanceSummary::LogSummary(AsyncSummary& summary) {
     double gps_as_completed =
         group_count / pr.final_query_all_samples_done_time;
 
-    double gps_as_scheduled =
-        group_count / pr.final_query_scheduled_time;
+    double gps_as_scheduled = group_count / pr.final_query_scheduled_time;
     summary("Scheduled groups per second: ", gps_as_scheduled);
     summary("Completed groups per second: ", DoubleToString(gps_as_completed));
-
   }
 
   std::string min_duration_recommendation;
@@ -716,13 +714,13 @@ void PerformanceSummary::LogDetail(AsyncDetail& detail) {
     MLPERF_LOG(detail, "group_sizes", pr.group_sizes);
     MLPERF_LOG(detail, "sample_index", pr.sample_index);
     std::vector<QuerySampleLatency> group_latencies = ProcessGroupLatencies();
-    for (size_t i = 0; i < group_latencies.size(); i++){
+    for (size_t i = 0; i < group_latencies.size(); i++) {
       MLPERF_LOG(detail, "group_latency", group_latencies[i]);
     }
   }
   ProcessLatencies();
-  
-  for (size_t i = 0; i < pr.sample_latencies.size(); i++){
+
+  for (size_t i = 0; i < pr.sample_latencies.size(); i++) {
     MLPERF_LOG(detail, "sample_latency", pr.sample_latencies[i]);
   }
 
