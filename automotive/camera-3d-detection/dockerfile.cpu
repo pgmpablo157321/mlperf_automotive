@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y python3 python3-pip libgl1 && \
 RUN pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 # install loadgen
 RUN cd /tmp && \
-    git clone --recursive https://github.com/mlcommons/mlperf_automotive && \
+    git clone --recursive https://github.com/pgmpablo157321/mlperf_automotive --branch verbose_run && \
     cd mlperf_automotive/loadgen && \
     pip install pybind11 && \
     CFLAGS="-std=c++14" python setup.py install && \
