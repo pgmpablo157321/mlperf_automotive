@@ -713,6 +713,8 @@ void PerformanceSummary::LogSummary(AsyncSummary& summary) {
 void PerformanceSummary::LogDetail(AsyncDetail& detail) {
 #if USE_NEW_LOGGING_FORMAT
   if (settings.use_grouped_qsl) {
+    MLPERF_LOG(detail, "group_sizes", pr.group_sizes);
+    MLPERF_LOG(detail, "sample_index", pr.sample_index);
     std::vector<QuerySampleLatency> group_latencies = ProcessGroupLatencies();
     for (size_t i = 0; i < group_latencies.size(); i++){
       MLPERF_LOG(detail, "group_latency", group_latencies[i]);
